@@ -100,7 +100,7 @@ export const ExchangeForm = ({ currencies }: Props) => {
         };
 
   return (
-    <form onSubmit={makeExchange}>
+    <form onSubmit={makeExchange} data-testid="exchange-form">
       <ScreenCentered>
         <Container>
           <ExchangeParticipant
