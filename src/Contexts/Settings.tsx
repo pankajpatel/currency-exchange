@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect, PropsWithChildren, useRef } from "react";
+import React, { useReducer, useEffect, PropsWithChildren } from "react";
 import { settingsReducer, initialState } from "../reducers/settings.reducer";
 import { SettingsContextType, ExchangeParams, Settings } from "../types";
 import { getSettings, saveSettings } from "../data/settings";
@@ -13,10 +13,8 @@ const { Provider, Consumer } = SettingsContext;
 
 export const SettingsProvider = ({ children }: PropsWithChildren<{}>) => {
   const [settings, dispatch] = useReducer(settingsReducer, initialState);
-  const lastUpdated = useRef<number>(0);
   const saveAppState = (data: Settings) => {
     const timestamp = Number(new Date());
-    lastUpdated.current = timestamp;
     saveSettings("app", data);
     saveSettings("timestamp", timestamp);
   };
@@ -26,9 +24,7 @@ export const SettingsProvider = ({ children }: PropsWithChildren<{}>) => {
   }, []);
 
   useEffect(() => {
-    if (lastUpdated.current) {
-      saveAppState(settings);
-    }
+    saveAppState(settings);
   }, [settings]);
 
   const updateSettings = (payload: object) => {

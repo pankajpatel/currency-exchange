@@ -46,7 +46,6 @@ export type ExchangeState = {
 };
 
 export type SettingsContextType = {
-  lastUpdated?: number;
   settings: Settings;
   updateSettings: Function;
   exchangeAmount: Function;

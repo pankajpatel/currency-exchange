@@ -4,6 +4,8 @@ import { Home } from "./pages/Home/Home";
 import { Welcome } from "./pages/Welcome/Welcome";
 import { Exchange } from "./pages/Exchange/Exchange";
 import { Transactions } from "./pages/Transactions/Transactions";
+import { Balance } from "./pages/Balance/Balance";
+import { Settings } from "./pages/Settings/Settings";
 import { SettingsProvider } from "./Contexts/Settings";
 
 function App() {
@@ -15,6 +17,12 @@ function App() {
             <Switch>
               <Route path="/transactions">
                 <Transactions />
+              </Route>
+              <Route path="/settings">
+                <Settings />
+              </Route>
+              <Route path="/balance">
+                <Balance />
               </Route>
               <Route path="/exchange">
                 <Exchange />

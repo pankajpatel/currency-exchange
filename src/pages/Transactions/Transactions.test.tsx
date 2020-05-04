@@ -2,7 +2,7 @@ import React from "react";
 import { render } from "@testing-library/react";
 import { Router } from "react-router-dom";
 import { createMemoryHistory } from "history";
-import { Settings } from "./Settings";
+import { Transactions } from "./Transactions";
 
 import SettingsContext from "../../Contexts/Settings";
 
@@ -46,15 +46,15 @@ const renderWithRouter = (Component: React.ReactNode) => {
   );
 };
 
-describe("Settings", () => {
+describe("Transactions", () => {
   test("renders", () => {
-    const { getByText } = renderWithRouter(<Settings />);
-    const app = getByText(/Settings/i);
+    const { getByText } = renderWithRouter(<Transactions />);
+    const app = getByText(/Transactions/i);
     expect(app).toBeInTheDocument();
-
-    expect(getByText(/Base Currency/i)).toBeInTheDocument();
-    expect(getByText(/10s/i)).toBeInTheDocument();
-
-    expect(getByText(/ABC, BCD, GBP/i)).toBeInTheDocument();
+    expect(getByText(/ABC/i)).toBeInTheDocument();
+    expect(getByText(/XYZ/i)).toBeInTheDocument();
+    expect(getByText(/10/i)).toBeInTheDocument();
+    expect(getByText(/= 25/i)).toBeInTheDocument();
+    expect(getByText(/2\.5/i)).toBeInTheDocument();
   });
 });

@@ -4,20 +4,23 @@ import React, {
   useEffect,
   FormEventHandler,
 } from "react";
+import { RouteProps, useHistory } from "react-router-dom";
 import RatesContext from "../../Contexts/Rates";
 import SettingsContext from "../../Contexts/Settings";
-import { Button, ScreenCentered } from "../styled";
-import { Container, InfoContainer, Message, Balance } from "./styled";
+import { Button, ScreenCentered, Container } from "../styled";
+import { InfoContainer, Message, Balance } from "./styled";
 import { RatesContextType, SettingsContextType } from "../../types";
 import { ExchangeSeparator } from "../ExchangeSeparator/ExchangeSeparator";
 import { ExchangeParticipant } from "../ExchangeParticipant/ExchangeParticipant";
 import { exchangeReducer, initialState } from "../../reducers/exchange.reducer";
 import formatNumber from "../../helpers/formatNumber";
+
 type Props = {
   currencies: Record<string, string>;
-};
+} & RouteProps;
 
 export const ExchangeForm = ({ currencies }: Props) => {
+  const history = useHistory();
   const ratesData = useContext<RatesContextType>(RatesContext);
   const { settings, exchangeAmount } = useContext<SettingsContextType>(
     SettingsContext
@@ -84,6 +87,7 @@ export const ExchangeForm = ({ currencies }: Props) => {
     e.preventDefault();
     exchangeAmount(exchangeData);
     (e.target as HTMLFormElement).reset();
+    history.push("/transactions");
   };
 
   const exchangeInfo =
@@ -100,8 +104,8 @@ export const ExchangeForm = ({ currencies }: Props) => {
         };
 
   return (
-    <form onSubmit={makeExchange} data-testid="exchange-form">
-      <ScreenCentered>
+    <ScreenCentered>
+      <form onSubmit={makeExchange} data-testid="exchange-form">
         <Container>
           <ExchangeParticipant
             state={exchangeData.from}
@@ -135,7 +139,7 @@ export const ExchangeForm = ({ currencies }: Props) => {
             Exchange
           </Button>
         </Container>
-      </ScreenCentered>
-    </form>
+      </form>
+    </ScreenCentered>
   );
 };
