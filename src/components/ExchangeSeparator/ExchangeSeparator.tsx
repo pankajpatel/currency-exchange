@@ -10,7 +10,7 @@ export const ExchangeSeparator = ({ values, onSwitchClick }: Props) => {
   return (
     <Separator data-testid="separator">
       <CurrencySwitch
-        onClick={onSwitchClick}
+        onClick={() => onSwitchClick()}
         data-testid="separator-switch-button"
       >
         ⇅
