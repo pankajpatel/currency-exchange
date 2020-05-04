@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { Home } from "./pages/Home/Home";
 import { Welcome } from "./pages/Welcome/Welcome";
 import { Exchange } from "./pages/Exchange/Exchange";
+import { Transactions } from "./pages/Transactions/Transactions";
 import { SettingsProvider } from "./Contexts/Settings";
 
 function App() {
@@ -12,6 +13,9 @@ function App() {
         <div className="container min-h-screen p-2 box-border mx-auto relative text-center">
           <Router>
             <Switch>
+              <Route path="/transactions">
+                <Transactions />
+              </Route>
               <Route path="/exchange">
                 <Exchange />
               </Route>

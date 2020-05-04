@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { RatesProvider } from "../../Contexts/Rates";
-import { ExchangeUI } from "./ExchangeUI";
+import { ExchangeForm } from "../../components/ExchangeForm/ExchangeForm";
 
 const CURRENCY_MAP = {
   EUR: "€",
@@ -11,7 +11,7 @@ const CURRENCY_MAP = {
 
 export const Exchange = () => (
   <RatesProvider>
-    <ExchangeUI currencies={CURRENCY_MAP} />
+    <ExchangeForm currencies={CURRENCY_MAP} />
     <Link to="/settings">Settings</Link>
   </RatesProvider>
 );

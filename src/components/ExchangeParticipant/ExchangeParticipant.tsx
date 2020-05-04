@@ -8,8 +8,8 @@ import { FlexContainer } from "../styled";
 const ExchangeCurrency = styled(FlexContainer)`
   padding-left: 1rem;
   padding-right: 1rem;
-  & > * > input,
-  & > * > select {
+  & input,
+  & select {
     font-size: 2rem;
     max-width: 100%;
     display: block;
@@ -41,7 +41,6 @@ export const ExchangeParticipant = ({
           onChange={onCurrencyChange}
         />
         <AmountInput
-          key={state.amount || 0}
           defaultValue={value}
           onChange={(e: ChangeEvent<HTMLInputElement>) => {
             const value = Number(e.target.value);

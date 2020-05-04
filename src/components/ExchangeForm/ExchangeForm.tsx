@@ -1,17 +1,23 @@
-import React, { useContext, useReducer, useEffect } from "react";
+import React, {
+  useContext,
+  useReducer,
+  useEffect,
+  FormEventHandler,
+} from "react";
 import RatesContext from "../../Contexts/Rates";
 import SettingsContext from "../../Contexts/Settings";
-import { Button, ScreenCentered } from "../../components/styled";
+import { Button, ScreenCentered } from "../styled";
 import { Container, InfoContainer, Message, Balance } from "./styled";
 import { RatesContextType, SettingsContextType } from "../../types";
-import { ExchangeSeparator } from "../../components/ExchangeSeparator/ExchangeSeparator";
-import { ExchangeParticipant } from "../../components/ExchangeParticipant/ExchangeParticipant";
+import { ExchangeSeparator } from "../ExchangeSeparator/ExchangeSeparator";
+import { ExchangeParticipant } from "../ExchangeParticipant/ExchangeParticipant";
 import { exchangeReducer, initialState } from "../../reducers/exchange.reducer";
+import formatNumber from "../../helpers/formatNumber";
 type Props = {
   currencies: Record<string, string>;
 };
 
-export const ExchangeUI = ({ currencies }: Props) => {
+export const ExchangeForm = ({ currencies }: Props) => {
   const ratesData = useContext<RatesContextType>(RatesContext);
   const { settings, exchangeAmount } = useContext<SettingsContextType>(
     SettingsContext
@@ -28,9 +34,7 @@ export const ExchangeUI = ({ currencies }: Props) => {
   useEffect(() => {
     dispatch({
       type: "RATES_UPDATED",
-      payload: {
-        rates: ratesData.rates,
-      },
+      payload: { rates: ratesData.rates },
     });
   }, [ratesData]);
 
@@ -46,9 +50,8 @@ export const ExchangeUI = ({ currencies }: Props) => {
   }
 
   const switchCurrencies = () => {
-    dispatch({
-      type: "EXCHANGE_SWITCHED",
-    });
+    ratesData.updateBaseCurrency(exchangeData.to.currency);
+    dispatch({ type: "EXCHANGE_SWITCHED" });
   };
 
   const updateBaseCurrency = (value: string) => {
@@ -77,10 +80,27 @@ export const ExchangeUI = ({ currencies }: Props) => {
     });
   };
 
-  const makeExchange = () => exchangeAmount(exchangeData);
+  const makeExchange: FormEventHandler<HTMLFormElement> = (e) => {
+    e.preventDefault();
+    exchangeAmount(exchangeData);
+    (e.target as HTMLFormElement).reset();
+  };
+
+  const exchangeInfo =
+    ratesData.loading && !exchangeData.rate
+      ? {
+          from: "⋅⋅⋅",
+          to: "⋅⋅⋅",
+        }
+      : {
+          from: `${currencies[exchangeData.from.currency]} 1`,
+          to: `${currencies[exchangeData.to.currency]} ${formatNumber(
+            exchangeData.rate
+          )}`,
+        };
 
   return (
-    <>
+    <form onSubmit={makeExchange}>
       <ScreenCentered>
         <Container>
           <ExchangeParticipant
@@ -90,17 +110,12 @@ export const ExchangeUI = ({ currencies }: Props) => {
             onAmountChange={updateBaseAmount}
           >
             <InfoContainer>
-              <Balance>Balance: {balance}</Balance>
+              <Balance>Balance: {formatNumber(balance)}</Balance>
               <Message>{message || ""}</Message>
             </InfoContainer>
           </ExchangeParticipant>
           <ExchangeSeparator
-            values={{
-              from: `${currencies[exchangeData.from.currency]} 1`,
-              to: `${currencies[exchangeData.to.currency]} ${
-                exchangeData.rate
-              }`,
-            }}
+            values={exchangeInfo}
             onSwitchClick={switchCurrencies}
           />
           <ExchangeParticipant
@@ -111,15 +126,16 @@ export const ExchangeUI = ({ currencies }: Props) => {
           >
             <InfoContainer>
               <Balance>
-                Balance: {settings.balances[exchangeData.to.currency]}
+                Balance:{" "}
+                {formatNumber(settings.balances[exchangeData.to.currency])}
               </Balance>
             </InfoContainer>
           </ExchangeParticipant>
-          <Button className="m-2 inline-block" onClick={makeExchange}>
+          <Button className="m-2 inline-block" type="submit">
             Exchange
           </Button>
         </Container>
       </ScreenCentered>
-    </>
+    </form>
   );
 };
