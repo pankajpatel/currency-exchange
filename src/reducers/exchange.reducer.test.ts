@@ -12,7 +12,7 @@ const state = {
   rate: 1.5,
 };
 
-describe("ExchangeReduce", () => {
+describe("Exchange Reducer", () => {
   test("default", () => {
     const value = exchangeReducer(state, {
       type: "UNKNOWN",
@@ -42,6 +42,19 @@ describe("ExchangeReduce", () => {
     expect(reducedState.from.currency).toBe("GHI");
   });
 
+  test("BASE_CURRENCY_UPDATED - Duplicate of Secondary Selected", () => {
+    const action = {
+      type: "BASE_CURRENCY_UPDATED",
+      payload: { value: state.to.currency },
+    };
+    const reducedState = exchangeReducer(state, action);
+    expect(reducedState.from.currency).toBe(state.to.currency);
+    expect(reducedState.to.currency).toBe(state.from.currency);
+
+    expect(reducedState.from.amount).toBe(state.from.amount);
+    expect(reducedState.to.amount).toBe(state.to.amount);
+  });
+
   test("SECONDARY_CURRENCY_UPDATED", () => {
     const action = {
       type: "SECONDARY_CURRENCY_UPDATED",
@@ -49,6 +62,19 @@ describe("ExchangeReduce", () => {
     };
     const reducedState = exchangeReducer(state, action);
     expect(reducedState.to.currency).toBe("DEF");
+  });
+
+  test("SECONDARY_CURRENCY_UPDATED - Duplicate of Base Selected", () => {
+    const action = {
+      type: "SECONDARY_CURRENCY_UPDATED",
+      payload: { value: state.from.currency },
+    };
+    const reducedState = exchangeReducer(state, action);
+    expect(reducedState.to.currency).toBe(state.from.currency);
+    expect(reducedState.from.currency).toBe(state.to.currency);
+
+    expect(reducedState.from.amount).toBe(state.from.amount);
+    expect(reducedState.to.amount).toBe(state.to.amount);
   });
 
   test("BASE_AMOUNT_UPDATED", () => {
@@ -76,5 +102,13 @@ describe("ExchangeReduce", () => {
     };
     const reducedState = exchangeReducer(state, action);
     expect(reducedState).toBeTruthy();
+  });
+
+  test("RESET_EXCHANGE", () => {
+    const action = { type: "RESET_EXCHANGE" };
+    const reducedState = exchangeReducer(state, action);
+    expect(reducedState).toBeTruthy();
+    expect(reducedState.from.amount).toBe(0);
+    expect(reducedState.to.amount).toBe(0);
   });
 });

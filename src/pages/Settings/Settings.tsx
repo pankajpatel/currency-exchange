@@ -6,6 +6,7 @@ export const Settings = () => {
     <>
       <h1>Settings</h1>
       <hr />
+      <Link to="/exchange">Exchange</Link>
     </>
   );
 };

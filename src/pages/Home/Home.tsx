@@ -1,10 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Button, ScreenCentered } from "../components/styled";
+import { Button, ScreenCentered } from "../../components/styled";
 
 export const Home = () => {
   return (
-    <ScreenCentered>
+    <ScreenCentered data-testid="home">
       <Button as={Link} to="/welcome" className="block m-2">
         Start
       </Button>

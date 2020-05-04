@@ -71,19 +71,31 @@ export const exchangeReducer: Reducer<Record<string, any>, Action> = (
     case "SECONDARY_AMOUNT_UPDATED":
       return {
         ...state,
-        to: {
-          ...state.to,
-          amount: isNaN(value) ? 0 : value,
-        },
         from: {
           ...state.from,
           amount: rate ? value / rate : state.from.amount,
+        },
+        to: {
+          ...state.to,
+          amount: isNaN(value) ? 0 : value,
         },
       };
     case "RATES_UPDATED":
       return {
         ...state,
         rate: payload.rates[state.to.currency] || rate,
+      };
+    case "RESET_EXCHANGE":
+      return {
+        ...state,
+        from: {
+          ...state.from,
+          amount: 0,
+        },
+        to: {
+          ...state.to,
+          amount: 0,
+        },
       };
     default:
       return state;

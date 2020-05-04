@@ -1,10 +1,11 @@
 import React, { useReducer, PropsWithChildren } from "react";
 import { settingsReducer, initialState } from "../reducers/settings.reducer";
-import { SettingsContextType } from "../types";
+import { SettingsContextType, ExchangeParams } from "../types";
 
 const SettingsContext = React.createContext<SettingsContextType>({
   settings: initialState,
   updateSettings: () => {},
+  exchangeAmount: () => {},
 });
 
 const { Provider, Consumer } = SettingsContext;
@@ -18,7 +19,14 @@ export const SettingsProvider = ({ children }: PropsWithChildren<{}>) => {
       payload,
     });
   };
-  const value = { settings, updateSettings };
+  const exchangeAmount = (params: ExchangeParams) => {
+    dispatch({
+      type: "EXCHANGE_INITIATED",
+      payload: params,
+    });
+  };
+  const value = { settings, updateSettings, exchangeAmount };
+
   return <Provider value={value}>{children}</Provider>;
 };
 

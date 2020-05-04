@@ -2,7 +2,7 @@ import React, { useContext, useReducer, useEffect } from "react";
 import RatesContext from "../../Contexts/Rates";
 import SettingsContext from "../../Contexts/Settings";
 import { Button, ScreenCentered } from "../../components/styled";
-import { Container } from "./styled";
+import { Container, InfoContainer, Message, Balance } from "./styled";
 import { RatesContextType, SettingsContextType } from "../../types";
 import { ExchangeSeparator } from "../../components/ExchangeSeparator/ExchangeSeparator";
 import { ExchangeParticipant } from "../../components/ExchangeParticipant/ExchangeParticipant";
@@ -13,7 +13,10 @@ type Props = {
 
 export const ExchangeUI = ({ currencies }: Props) => {
   const ratesData = useContext<RatesContextType>(RatesContext);
-  const { settings } = useContext<SettingsContextType>(SettingsContext);
+  const { settings, exchangeAmount } = useContext<SettingsContextType>(
+    SettingsContext
+  );
+  let message: string | null = null;
   const [exchangeData, dispatch] = useReducer(exchangeReducer, {
     ...initialState,
     from: {
@@ -31,7 +34,16 @@ export const ExchangeUI = ({ currencies }: Props) => {
     });
   }, [ratesData]);
 
+  useEffect(() => {
+    dispatch({ type: "RESET_EXCHANGE" });
+  }, [settings.balances]);
+
   const CURRENCIES = Object.keys(currencies);
+  const balance = settings.balances[exchangeData.from.currency];
+
+  if (exchangeData.from.amount > balance) {
+    message = "Insufficient Balance";
+  }
 
   const switchCurrencies = () => {
     dispatch({
@@ -65,6 +77,8 @@ export const ExchangeUI = ({ currencies }: Props) => {
     });
   };
 
+  const makeExchange = () => exchangeAmount(exchangeData);
+
   return (
     <>
       <ScreenCentered>
@@ -74,7 +88,12 @@ export const ExchangeUI = ({ currencies }: Props) => {
             currencies={CURRENCIES}
             onCurrencyChange={updateBaseCurrency}
             onAmountChange={updateBaseAmount}
-          />
+          >
+            <InfoContainer>
+              <Balance>Balance: {balance}</Balance>
+              <Message>{message || ""}</Message>
+            </InfoContainer>
+          </ExchangeParticipant>
           <ExchangeSeparator
             values={{
               from: `${currencies[exchangeData.from.currency]} 1`,
@@ -89,8 +108,16 @@ export const ExchangeUI = ({ currencies }: Props) => {
             currencies={CURRENCIES}
             onCurrencyChange={updateSecondaryCurrency}
             onAmountChange={updateSecondaryAmount}
-          />
-          <Button className="m-2 inline-block">Exchange</Button>
+          >
+            <InfoContainer>
+              <Balance>
+                Balance: {settings.balances[exchangeData.to.currency]}
+              </Balance>
+            </InfoContainer>
+          </ExchangeParticipant>
+          <Button className="m-2 inline-block" onClick={makeExchange}>
+            Exchange
+          </Button>
         </Container>
       </ScreenCentered>
     </>

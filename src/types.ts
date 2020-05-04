@@ -2,6 +2,9 @@ export type Currency = string;
 export type Amount = number;
 export type Currencies = Currency[];
 export type Rates = Record<string, string | number>;
+export type Transaction = {
+  timestamp: number;
+} & ExchangeParams;
 
 export type Action = {
   type: string;
@@ -32,6 +35,9 @@ export type RatesResponse = {
 export type Settings = {
   base: string;
   poll: number;
+  currencies: Currencies;
+  transactions?: Transaction[];
+  balances: Record<string, number>;
 };
 
 export type ExchangeState = {
@@ -42,4 +48,11 @@ export type ExchangeState = {
 export type SettingsContextType = {
   settings: Settings;
   updateSettings: Function;
+  exchangeAmount: Function;
+};
+
+export type ExchangeParams = {
+  from: ExchangeState;
+  to: ExchangeState;
+  rate: number;
 };
