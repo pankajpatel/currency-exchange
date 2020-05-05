@@ -4,6 +4,7 @@ import styled from "styled-components";
 export const Input = styled.input`
   text-align: right;
   position: relative;
+  background-color: transparent;
   &:before {
     content: "-";
     position: absolute;

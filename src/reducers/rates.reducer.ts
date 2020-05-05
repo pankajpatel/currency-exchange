@@ -27,6 +27,7 @@ export const ratesReducer: Reducer<RatesState, Action> = (
       return {
         ...state,
         ...payload,
+        rates: {},
       };
     default:
       return state;

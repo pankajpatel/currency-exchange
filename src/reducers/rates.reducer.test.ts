@@ -36,5 +36,6 @@ describe("Rates Reducer", () => {
       payload: { currency },
     });
     expect(value.currency).toBe(currency);
+    expect(JSON.stringify(value.rates)).toBe("{}");
   });
 });

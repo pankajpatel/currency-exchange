@@ -10,12 +10,13 @@ export const ExchangeSeparator = ({ values, onSwitchClick }: Props) => {
   return (
     <Separator data-testid="separator">
       <CurrencySwitch
+        type="button"
         onClick={() => onSwitchClick()}
         data-testid="separator-switch-button"
       >
         ⇅
       </CurrencySwitch>
-      <SeparatorButton>
+      <SeparatorButton type="button">
         {values.from} → {values.to}
       </SeparatorButton>
     </Separator>

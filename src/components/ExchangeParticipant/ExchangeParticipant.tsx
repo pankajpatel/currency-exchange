@@ -8,12 +8,11 @@ import { FlexContainer } from "../styled";
 const ExchangeCurrency = styled(FlexContainer)`
   padding-left: 1rem;
   padding-right: 1rem;
+  font-size: 2rem;
   & input,
   & select {
-    font-size: 2rem;
     max-width: 100%;
     display: block;
-    background: transparent;
     outline: none;
   }
 `;

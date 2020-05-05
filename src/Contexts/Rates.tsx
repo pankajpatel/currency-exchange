@@ -55,7 +55,13 @@ export const RatesProvider = ({ children }: PropsWithChildren<{}>) => {
     <Provider
       value={{
         ...ratesData,
-        updateBaseCurrency: setBaseCurrency,
+        updateBaseCurrency: (currency: string) => {
+          setBaseCurrency(currency);
+          dispatch({
+            type: "BASE_CURRENCY_CHANGED",
+            payload: { currency },
+          });
+        },
       }}
     >
       {children}

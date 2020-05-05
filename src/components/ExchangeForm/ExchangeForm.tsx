@@ -3,6 +3,7 @@ import React, {
   useReducer,
   useEffect,
   FormEventHandler,
+  useRef,
 } from "react";
 import { RouteProps, useHistory } from "react-router-dom";
 import RatesContext from "../../Contexts/Rates";
@@ -21,6 +22,7 @@ type Props = {
 
 export const ExchangeForm = ({ currencies }: Props) => {
   const history = useHistory();
+  const form = useRef<HTMLFormElement | null>(null);
   const ratesData = useContext<RatesContextType>(RatesContext);
   const { settings, exchangeAmount } = useContext<SettingsContextType>(
     SettingsContext
@@ -54,6 +56,7 @@ export const ExchangeForm = ({ currencies }: Props) => {
 
   const switchCurrencies = () => {
     ratesData.updateBaseCurrency(exchangeData.to.currency);
+    form.current?.reset();
     dispatch({ type: "EXCHANGE_SWITCHED" });
   };
 
@@ -86,7 +89,7 @@ export const ExchangeForm = ({ currencies }: Props) => {
   const makeExchange: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
     exchangeAmount(exchangeData);
-    (e.target as HTMLFormElement).reset();
+    form.current?.reset();
     history.push("/transactions");
   };
 
@@ -104,7 +107,7 @@ export const ExchangeForm = ({ currencies }: Props) => {
         };
 
   return (
-    <form onSubmit={makeExchange} data-testid="exchange-form">
+    <form onSubmit={makeExchange} data-testid="exchange-form" ref={form}>
       <Container>
         <ExchangeParticipant
           state={exchangeData.from}
