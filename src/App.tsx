@@ -1,12 +1,16 @@
 import React from "react";
+import loadable from "@loadable/component";
 import { HashRouter as Router, Switch, Route } from "react-router-dom";
 import { Home } from "./pages/Home/Home";
-import Welcome from "./pages/Welcome/Welcome";
-import Exchange from "./pages/Exchange/Exchange";
-import Transactions from "./pages/Transactions/Transactions";
-import Balance from "./pages/Balance/Balance";
-import Settings from "./pages/Settings/Settings";
 import { SettingsProvider } from "./Contexts/Settings";
+import Welcome from "./pages/Welcome/Welcome";
+
+const Exchange = loadable(() => import("./pages/Exchange/Exchange"));
+const Transactions = loadable(() =>
+  import("./pages/Transactions/Transactions")
+);
+const Balance = loadable(() => import("./pages/Balance/Balance"));
+const Settings = loadable(() => import("./pages/Settings/Settings"));
 
 function App() {
   return (
