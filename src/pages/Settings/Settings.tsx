@@ -51,3 +51,5 @@ export const Settings = () => {
     </ScreenCentered>
   );
 };
+
+export default Settings;

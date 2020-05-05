@@ -54,3 +54,5 @@ export const Transactions = () => {
     </ScreenCentered>
   );
 };
+
+export default Transactions;

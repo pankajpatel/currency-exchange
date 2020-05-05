@@ -68,3 +68,5 @@ export const Balance = () => {
     </ScreenCentered>
   );
 };
+
+export default Balance;

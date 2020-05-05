@@ -26,3 +26,5 @@ export const Welcome = () => {
     </ScreenCentered>
   );
 };
+
+export default Welcome;

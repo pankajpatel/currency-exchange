@@ -32,3 +32,5 @@ export const Exchange = () => (
     </ScreenCentered>
   </RatesProvider>
 );
+
+export default Exchange;

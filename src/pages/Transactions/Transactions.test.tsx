@@ -53,8 +53,8 @@ describe("Transactions", () => {
     expect(app).toBeInTheDocument();
     expect(getByText(/ABC/i)).toBeInTheDocument();
     expect(getByText(/XYZ/i)).toBeInTheDocument();
-    expect(getByText(/10/i)).toBeInTheDocument();
+    expect(getByText(/10 x/i)).toBeInTheDocument();
     expect(getByText(/= 25/i)).toBeInTheDocument();
-    expect(getByText(/2\.5/i)).toBeInTheDocument();
+    expect(getByText(/x 2\.5/i)).toBeInTheDocument();
   });
 });
