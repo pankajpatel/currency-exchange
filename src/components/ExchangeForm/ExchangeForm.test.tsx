@@ -37,9 +37,10 @@ const mockSettingsContext = {
   updateSettings: jest.fn(),
   exchangeAmount: jest.fn(),
 };
-
+const mockHistoryPush = jest.fn();
 const renderWithRouter = (Component: React.ReactNode) => {
   const history = createMemoryHistory();
+  history.push = mockHistoryPush;
   return render(
     <Router history={history}>
       <RatesContext.Provider value={mockRatesContext}>
@@ -87,5 +88,108 @@ describe("ExchangeForm", () => {
     expect(queryAllByTestId("amount-input")[0].value).toBe(value.toString());
     expect(queryAllByTestId("amount-input")[1].value).toBe("8");
     expect(queryByText(/Insufficient/i)).not.toBeInTheDocument();
+  });
+
+  test("switch currency", () => {
+    const { getByTestId, queryAllByTestId, queryByText } = renderWithRouter(
+      <ExchangeForm currencies={CURRENCY_MAP} />
+    );
+    expect(getByTestId("separator-switch-button")).toBeInTheDocument();
+
+    const value = 2;
+    act(() => {
+      fireEvent.change(queryAllByTestId("amount-input")[0], {
+        target: { value },
+      });
+    });
+
+    expect(queryAllByTestId("amount-input")[0].value).toBe(value.toString());
+    expect(queryAllByTestId("amount-input")[1].value).toBe("8");
+
+    expect(queryAllByTestId("currency-select")[0].value).toBe("ABC");
+    expect(queryAllByTestId("currency-select")[1].value).toBe("GBP");
+
+    expect(queryByText(/Insufficient/i)).not.toBeInTheDocument();
+
+    act(() => {
+      fireEvent.click(getByTestId("separator-switch-button"));
+    });
+
+    expect(queryAllByTestId("currency-select")[0].value).toBe("GBP");
+    expect(queryAllByTestId("currency-select")[1].value).toBe("ABC");
+
+    expect(queryAllByTestId("amount-input")[0].value).toBe("8");
+    expect(queryAllByTestId("amount-input")[1].value).toBe(value.toString());
+  });
+
+  test("switch currency for same currency selection on both Exchange Pockets", () => {
+    const { getByTestId, queryAllByTestId, queryByText } = renderWithRouter(
+      <ExchangeForm currencies={CURRENCY_MAP} />
+    );
+    expect(getByTestId("separator-switch-button")).toBeInTheDocument();
+
+    const value = 2;
+    act(() => {
+      fireEvent.change(queryAllByTestId("amount-input")[0], {
+        target: { value },
+      });
+    });
+
+    expect(queryAllByTestId("amount-input")[0].value).toBe(value.toString());
+    expect(queryAllByTestId("amount-input")[1].value).toBe("8");
+
+    expect(queryAllByTestId("currency-select")[0].value).toBe("ABC");
+    expect(queryAllByTestId("currency-select")[1].value).toBe("GBP");
+
+    expect(queryByText(/Insufficient/i)).not.toBeInTheDocument();
+
+    act(() => {
+      fireEvent.change(queryAllByTestId("currency-select")[0], {
+        target: { value: "GBP" },
+      });
+    });
+
+    expect(queryAllByTestId("currency-select")[0].value).toBe("GBP");
+    expect(queryAllByTestId("currency-select")[1].value).toBe("ABC");
+
+    expect(queryAllByTestId("amount-input")[0].value).toBe(value.toString());
+    expect(queryAllByTestId("amount-input")[1].value).toBe("8");
+
+    act(() => {
+      fireEvent.change(queryAllByTestId("currency-select")[1], {
+        target: { value: "GBP" },
+      });
+    });
+
+    expect(queryAllByTestId("currency-select")[0].value).toBe("ABC");
+    expect(queryAllByTestId("currency-select")[1].value).toBe("GBP");
+
+    expect(queryAllByTestId("amount-input")[0].value).toBe(value.toString());
+    expect(queryAllByTestId("amount-input")[1].value).toBe("8");
+  });
+
+  test("onClicking the exchangeButton, it should redirect the user to transactions", () => {
+    const { getByTestId, queryAllByTestId, queryByText } = renderWithRouter(
+      <ExchangeForm currencies={CURRENCY_MAP} />
+    );
+    mockHistoryPush.mockClear();
+    expect(getByTestId("separator-switch-button")).toBeInTheDocument();
+
+    const value = 2;
+    act(() => {
+      fireEvent.change(queryAllByTestId("amount-input")[0], {
+        target: { value },
+      });
+    });
+
+    expect(queryByText(/Insufficient/i)).not.toBeInTheDocument();
+    expect(mockHistoryPush).toHaveBeenCalledTimes(0);
+
+    act(() => {
+      fireEvent.click(getByTestId("button-do-exchange"));
+    });
+
+    expect(mockHistoryPush).toHaveBeenCalledTimes(1);
+    expect(mockHistoryPush).toHaveBeenCalledWith("/transactions");
   });
 });

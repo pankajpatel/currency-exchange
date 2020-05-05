@@ -7,7 +7,7 @@ import React, {
 import { RouteProps, useHistory } from "react-router-dom";
 import RatesContext from "../../Contexts/Rates";
 import SettingsContext from "../../Contexts/Settings";
-import { Button, ScreenCentered, Container } from "../styled";
+import { Button, Container } from "../styled";
 import { InfoContainer, Message, Balance } from "./styled";
 import { RatesContextType, SettingsContextType } from "../../types";
 import { ExchangeSeparator } from "../ExchangeSeparator/ExchangeSeparator";
@@ -104,42 +104,44 @@ export const ExchangeForm = ({ currencies }: Props) => {
         };
 
   return (
-    <ScreenCentered>
-      <form onSubmit={makeExchange} data-testid="exchange-form">
-        <Container>
-          <ExchangeParticipant
-            state={exchangeData.from}
-            currencies={CURRENCIES}
-            onCurrencyChange={updateBaseCurrency}
-            onAmountChange={updateBaseAmount}
-          >
-            <InfoContainer>
-              <Balance>Balance: {formatNumber(balance)}</Balance>
-              <Message>{message || ""}</Message>
-            </InfoContainer>
-          </ExchangeParticipant>
-          <ExchangeSeparator
-            values={exchangeInfo}
-            onSwitchClick={switchCurrencies}
-          />
-          <ExchangeParticipant
-            state={exchangeData.to}
-            currencies={CURRENCIES}
-            onCurrencyChange={updateSecondaryCurrency}
-            onAmountChange={updateSecondaryAmount}
-          >
-            <InfoContainer>
-              <Balance>
-                Balance:{" "}
-                {formatNumber(settings.balances[exchangeData.to.currency])}
-              </Balance>
-            </InfoContainer>
-          </ExchangeParticipant>
-          <Button className="m-2 inline-block" type="submit">
-            Exchange
-          </Button>
-        </Container>
-      </form>
-    </ScreenCentered>
+    <form onSubmit={makeExchange} data-testid="exchange-form">
+      <Container>
+        <ExchangeParticipant
+          state={exchangeData.from}
+          currencies={CURRENCIES}
+          onCurrencyChange={updateBaseCurrency}
+          onAmountChange={updateBaseAmount}
+        >
+          <InfoContainer>
+            <Balance>Balance: {formatNumber(balance)}</Balance>
+            <Message>{message || ""}</Message>
+          </InfoContainer>
+        </ExchangeParticipant>
+        <ExchangeSeparator
+          values={exchangeInfo}
+          onSwitchClick={switchCurrencies}
+        />
+        <ExchangeParticipant
+          state={exchangeData.to}
+          currencies={CURRENCIES}
+          onCurrencyChange={updateSecondaryCurrency}
+          onAmountChange={updateSecondaryAmount}
+        >
+          <InfoContainer>
+            <Balance>
+              Balance:{" "}
+              {formatNumber(settings.balances[exchangeData.to.currency])}
+            </Balance>
+          </InfoContainer>
+        </ExchangeParticipant>
+        <Button
+          className="m-2 inline-block"
+          type="submit"
+          data-testid="button-do-exchange"
+        >
+          Exchange
+        </Button>
+      </Container>
+    </form>
   );
 };
