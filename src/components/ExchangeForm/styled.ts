@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { FlexContainer } from "../../components/styled";
+import { FlexContainer } from "@components/styled";
 
 export const InfoContainer = styled(FlexContainer)`
   font-size: 0.8rem;
