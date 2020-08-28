@@ -8,11 +8,11 @@ import React, {
 import { RouteProps, useHistory } from "react-router-dom";
 import RatesContext from "../../Contexts/Rates";
 import SettingsContext from "../../Contexts/Settings";
-import { Button, Container } from "../styled";
+import { Button, Container } from "@components/styled";
 import { InfoContainer, Message, Balance } from "./styled";
 import { RatesContextType, SettingsContextType } from "../../types";
-import { ExchangeSeparator } from "../ExchangeSeparator/ExchangeSeparator";
-import { ExchangeParticipant } from "../ExchangeParticipant/ExchangeParticipant";
+import { ExchangeSeparator } from "@components/ExchangeSeparator/ExchangeSeparator";
+import { ExchangeParticipant } from "@components/ExchangeParticipant/ExchangeParticipant";
 import { exchangeReducer, initialState } from "../../reducers/exchange.reducer";
 import formatNumber from "../../helpers/formatNumber";
 

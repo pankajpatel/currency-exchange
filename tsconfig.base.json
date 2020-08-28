@@ -22,7 +22,8 @@
     "paths": {
       "@components/*": ["components/*"],
       "@reducers/*": ["reducers/*"],
-      "@helpers/*": ["helpers/*"]
+      "@helpers/*": ["helpers/*"],
+      "@pages/*": ["pages/*"]
     }
   },
   "include": [

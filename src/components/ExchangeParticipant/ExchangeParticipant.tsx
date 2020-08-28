@@ -1,9 +1,9 @@
 import React, { ChangeEvent, PropsWithChildren } from "react";
 import styled from "styled-components";
-import { Select } from "../Select/Select";
-import { AmountInput } from "../AmountInput/AmountInput";
+import { Select } from "@components/Select/Select";
+import { AmountInput } from "@components/AmountInput/AmountInput";
 import { ExchangeState } from "../../types";
-import { FlexContainer } from "../styled";
+import { FlexContainer } from "@components/styled";
 
 const ExchangeCurrency = styled(FlexContainer)`
   padding-left: 1rem;

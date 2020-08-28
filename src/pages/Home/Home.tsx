@@ -11,3 +11,5 @@ export const Home = () => {
     </ScreenCentered>
   );
 };
+
+export default Home
