@@ -16,7 +16,7 @@
     "@types/react-dom": "^18.0.0",
     "@types/react-router-dom": "^5.1.5",
     "@types/styled-components": "^5.1.0",
-    "alias-hq": "^2.0.1",
+    "alias-hq": "^6.0.0",
     "animated-styled-components": "^0.6.0",
     "react": "^18.0.0",
     "react-app-rewired": "^2.1.6",
